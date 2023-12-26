@@ -42,6 +42,7 @@
             this.gridCPU = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gridPrior = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlQuantum = new System.Windows.Forms.Panel();
+            this.quantumInput = new System.Windows.Forms.NumericUpDown();
             this.lblQuantum = new System.Windows.Forms.Label();
             this.pnlPreemp = new System.Windows.Forms.Panel();
             this.radioPreemp = new System.Windows.Forms.RadioButton();
@@ -55,12 +56,11 @@
             this.sitemPrior = new System.Windows.Forms.ToolStripMenuItem();
             this.lblSign = new System.Windows.Forms.Label();
             this.lblChoose = new System.Windows.Forms.Label();
-            this.quantumInput = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridInput)).BeginInit();
             this.pnlQuantum.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.quantumInput)).BeginInit();
             this.pnlPreemp.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.quantumInput)).BeginInit();
             this.SuspendLayout();
             // 
             // lblGantt
@@ -85,6 +85,7 @@
             // 
             // pnlGantt
             // 
+            this.pnlGantt.AutoScroll = true;
             this.pnlGantt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlGantt.Location = new System.Drawing.Point(18, 290);
             this.pnlGantt.Name = "pnlGantt";
@@ -94,7 +95,7 @@
             // txtOutput
             // 
             this.txtOutput.BackColor = System.Drawing.Color.Black;
-            this.txtOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.txtOutput.ForeColor = System.Drawing.Color.Aqua;
             this.txtOutput.Location = new System.Drawing.Point(18, 376);
             this.txtOutput.Multiline = true;
@@ -200,6 +201,13 @@
             this.pnlQuantum.TabIndex = 19;
             this.pnlQuantum.Visible = false;
             this.pnlQuantum.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlQuantum_Paint);
+            // 
+            // quantumInput
+            // 
+            this.quantumInput.Location = new System.Drawing.Point(83, 25);
+            this.quantumInput.Name = "quantumInput";
+            this.quantumInput.Size = new System.Drawing.Size(71, 22);
+            this.quantumInput.TabIndex = 31;
             // 
             // lblQuantum
             // 
@@ -327,13 +335,6 @@
             this.lblChoose.TabIndex = 29;
             this.lblChoose.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // quantumInput
-            // 
-            this.quantumInput.Location = new System.Drawing.Point(83, 25);
-            this.quantumInput.Name = "quantumInput";
-            this.quantumInput.Size = new System.Drawing.Size(71, 22);
-            this.quantumInput.TabIndex = 31;
-            // 
             // simForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -360,11 +361,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridInput)).EndInit();
             this.pnlQuantum.ResumeLayout(false);
             this.pnlQuantum.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.quantumInput)).EndInit();
             this.pnlPreemp.ResumeLayout(false);
             this.pnlPreemp.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.quantumInput)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
