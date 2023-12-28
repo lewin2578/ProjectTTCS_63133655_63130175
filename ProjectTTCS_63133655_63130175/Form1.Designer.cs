@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(simForm));
             this.lblGantt = new System.Windows.Forms.Label();
             this.lblOutput = new System.Windows.Forms.Label();
             this.pnlGantt = new System.Windows.Forms.Panel();
@@ -87,6 +88,7 @@
             // 
             this.pnlGantt.AutoScroll = true;
             this.pnlGantt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlGantt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.pnlGantt.Location = new System.Drawing.Point(18, 290);
             this.pnlGantt.Name = "pnlGantt";
             this.pnlGantt.Size = new System.Drawing.Size(690, 60);
@@ -95,7 +97,7 @@
             // txtOutput
             // 
             this.txtOutput.BackColor = System.Drawing.Color.Black;
-            this.txtOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.txtOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.txtOutput.ForeColor = System.Drawing.Color.Aqua;
             this.txtOutput.Location = new System.Drawing.Point(18, 376);
             this.txtOutput.Multiline = true;
@@ -107,6 +109,7 @@
             // btnReset
             // 
             this.btnReset.BackColor = System.Drawing.Color.Red;
+            this.btnReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.btnReset.Location = new System.Drawing.Point(636, 205);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(72, 43);
@@ -118,6 +121,7 @@
             // btnRun
             // 
             this.btnRun.BackColor = System.Drawing.Color.Lime;
+            this.btnRun.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.btnRun.Location = new System.Drawing.Point(636, 156);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(72, 43);
@@ -128,6 +132,7 @@
             // 
             // btnDelete
             // 
+            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.btnDelete.Location = new System.Drawing.Point(636, 107);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(72, 43);
@@ -138,6 +143,7 @@
             // 
             // btnAdd
             // 
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.btnAdd.Location = new System.Drawing.Point(636, 58);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(72, 43);
@@ -200,22 +206,22 @@
             this.pnlQuantum.Size = new System.Drawing.Size(173, 71);
             this.pnlQuantum.TabIndex = 19;
             this.pnlQuantum.Visible = false;
-            this.pnlQuantum.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlQuantum_Paint);
             // 
             // quantumInput
             // 
+            this.quantumInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.quantumInput.Location = new System.Drawing.Point(83, 25);
             this.quantumInput.Name = "quantumInput";
-            this.quantumInput.Size = new System.Drawing.Size(71, 22);
+            this.quantumInput.Size = new System.Drawing.Size(71, 24);
             this.quantumInput.TabIndex = 31;
             // 
             // lblQuantum
             // 
             this.lblQuantum.AutoSize = true;
-            this.lblQuantum.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F);
+            this.lblQuantum.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.lblQuantum.Location = new System.Drawing.Point(12, 27);
             this.lblQuantum.Name = "lblQuantum";
-            this.lblQuantum.Size = new System.Drawing.Size(60, 16);
+            this.lblQuantum.Size = new System.Drawing.Size(69, 18);
             this.lblQuantum.TabIndex = 21;
             this.lblQuantum.Text = "Quantum";
             // 
@@ -234,9 +240,10 @@
             // radioPreemp
             // 
             this.radioPreemp.AutoSize = true;
-            this.radioPreemp.Location = new System.Drawing.Point(17, 37);
+            this.radioPreemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.radioPreemp.Location = new System.Drawing.Point(17, 35);
             this.radioPreemp.Name = "radioPreemp";
-            this.radioPreemp.Size = new System.Drawing.Size(132, 20);
+            this.radioPreemp.Size = new System.Drawing.Size(144, 22);
             this.radioPreemp.TabIndex = 20;
             this.radioPreemp.Text = "Không độc quyền";
             this.radioPreemp.UseVisualStyleBackColor = true;
@@ -245,9 +252,10 @@
             // 
             this.radioNonPreemp.AutoSize = true;
             this.radioNonPreemp.Checked = true;
-            this.radioNonPreemp.Location = new System.Drawing.Point(17, 11);
+            this.radioNonPreemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.radioNonPreemp.Location = new System.Drawing.Point(17, 7);
             this.radioNonPreemp.Name = "radioNonPreemp";
-            this.radioNonPreemp.Size = new System.Drawing.Size(92, 20);
+            this.radioNonPreemp.Size = new System.Drawing.Size(100, 22);
             this.radioNonPreemp.TabIndex = 19;
             this.radioNonPreemp.TabStop = true;
             this.radioNonPreemp.Text = "Độc quyền";
@@ -269,7 +277,7 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.chooseStrip});
-            this.menuStrip1.Location = new System.Drawing.Point(37, 45);
+            this.menuStrip1.Location = new System.Drawing.Point(35, 45);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(137, 28);
             this.menuStrip1.TabIndex = 16;
@@ -319,7 +327,7 @@
             // 
             this.lblSign.AutoSize = true;
             this.lblSign.ForeColor = System.Drawing.Color.OrangeRed;
-            this.lblSign.Location = new System.Drawing.Point(38, 16);
+            this.lblSign.Location = new System.Drawing.Point(36, 16);
             this.lblSign.Name = "lblSign";
             this.lblSign.Size = new System.Drawing.Size(138, 32);
             this.lblSign.TabIndex = 30;
@@ -355,6 +363,7 @@
             this.Controls.Add(this.pnlPreemp);
             this.Controls.Add(this.lblAppName);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "simForm";
             this.Text = "MÔ PHỎNG CÁC CHIẾN LƯỢC ĐIỀU PHỐI TIẾN TRÌNH";
             this.Load += new System.EventHandler(this.simForm_Load);

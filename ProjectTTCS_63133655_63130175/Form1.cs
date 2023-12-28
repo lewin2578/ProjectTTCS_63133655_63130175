@@ -15,6 +15,10 @@ namespace ProjectTTCS_63133655_63130175
 {
     public partial class simForm : Form
     {
+        // MÔ PHỎNG CÁC CHIẾN LƯỢC ĐIỀU PHỐI TIẾN TRÌNH
+        // NTU
+        // Nguyễn Hoài Huy Đạt 63133655
+        // Đinh Bá Đạt 63130175
         public simForm()
         {
             InitializeComponent();
@@ -29,24 +33,30 @@ namespace ProjectTTCS_63133655_63130175
             txtOutput.Clear();
             txtOutput.Refresh();
         }
-        //Input
-        public struct process
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Structs and global variables
+        public struct process // tiến trình
         {
-            public string name;
-            public int timeQUEUE, timeCPU, priority;
-            public int timeIN, timeOUT, timeWAIT, timeSAVE;
+            public string name; // tên tiến trình
+            public int timeQUEUE, timeCPU, priority; // tgian đến, tgian xử lý, độ ưu tiên
+            public int timeIN, timeOUT, timeWAIT, timeSAVE; // tgian vào, tgian ra, tgian chờ, tgian lưu lại trong hệ thống
             public int index;
         }
 
-        public struct color
+        public struct color // màu vẽ cho gantt chart
         {
-            public int x, y, z;
+            public int x, y, z; // RGB 
         }
 
-        public int n, m;
-        public int q;
-        public int select;
-        //Control
+        public int n, m; // số tiến trình
+        public int q; // giá trị quantum
+        public int select; // biến chọn chiến lược
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Controls
         private void chooseStrip_Click(object sender, EventArgs e)
         {
             lblSign.Visible = false;
@@ -110,11 +120,6 @@ namespace ProjectTTCS_63133655_63130175
             dataGridInput.Rows.RemoveAt(dataGridInput.Rows.Count - 1);
         }
 
-        private void pnlQuantum_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void btnRun_Click(object sender, EventArgs e)
         {
             process[] p = new process[100];
@@ -176,11 +181,11 @@ namespace ProjectTTCS_63133655_63130175
                 switch(select)
                 {
                     case 1: FCFS(p);break;//FCFS
-                    case 2: SJF(p);break;//SJF doc quyen
-                    case 3: SRTF(p);break;//SJF ko doc quyen
+                    case 2: SJF(p);break;//SJF độc quyền
+                    case 3: SRTF(p);break;//SJF ko độc quyền
                     case 4: RR(p);break;//RR
-                    case 5:;break;//Prior doc quyen
-                    case 6:;break;//Prior ko doc quyen
+                    case 5:;break;//Prior độc quyền
+                    case 6:;break;//Prior ko độc quyền
                 }
             }
             //for testing
@@ -189,7 +194,10 @@ namespace ProjectTTCS_63133655_63130175
             //for (int i = 1; i <= n; i++)
             //   Console.WriteLine($"{p[i].name}\t{p[i].timeQUEUE}\t{p[i].timeCPU}\t{p[i].priority}");
         }
-        //Function
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Functions
         public void swap(process[] p, int i, int j)
         {
             p[0] = p[i];
@@ -197,7 +205,7 @@ namespace ProjectTTCS_63133655_63130175
             p[j] = p[0];
         }
 
-        public void sort(process[] p) // sort cho thoi gian den
+        public void sort(process[] p) // sắp xếp theo tgian đến
         {
             for(int i=1; i<=n; i++)
                 for(int j = i+1; j<=n; j++)
@@ -205,7 +213,7 @@ namespace ProjectTTCS_63133655_63130175
                         swap(p, i, j);
         }
 
-        public void cpu_sort(process[] p) // only for sjf
+        public void cpu_sort(process[] p) // sắp xếp tgian cpu (chỉ dành cho SJF)
         {
             sort(p);
             for (int i = 1; i <= n; i++)
@@ -214,7 +222,92 @@ namespace ProjectTTCS_63133655_63130175
                         swap(p, i, j);
         }
 
-        public void FCFS(process[] p)
+        public void gantt(process[] p) // biểu đồ Gantt
+        {
+            Graphics g = pnlGantt.CreateGraphics();
+            Pen pen = new Pen(Color.Black);
+            Font font = new Font("Microsoft Sans Serif", 8f, FontStyle.Regular);
+
+            color[] c = new color[1000];
+            Random r = new Random();
+            for (int i = 1; i <= n; i++)
+            {
+                c[i].x = r.Next(0, 255);
+                c[i].y = r.Next(0, 255);
+                c[i].z = r.Next(0, 255);
+            }
+
+            int a = 0;
+            for (int i = 1; i <= m; i++)
+            {
+                if (i == 1)
+                    a = p[i].timeIN * 20 + 1;
+                else
+                    a += 20 * ((p[i - 1].timeOUT + 1) - p[i - 1].timeIN) + 1;
+                System.Windows.Forms.TextBox txb = new System.Windows.Forms.TextBox();
+                txb.Location = new Point(a, 1);
+                txb.Multiline = true;
+                txb.Font = font;
+                txb.Text = " " + p[i].name;
+                txb.Text += "\r\n";
+                txb.Text += "\r\n " + p[i].timeIN;
+                txb.BorderStyle = 0;
+                txb.BackColor = System.Drawing.Color.FromArgb(255, c[p[i].index].x, c[p[i].index].y, c[p[i].index].z);
+                txb.AutoSize = false;
+                txb.ReadOnly = true;
+                txb.Margin = new Padding(0, 0, 0, 0);
+                txb.Size = new Size(20 * ((p[i].timeOUT + 1) - p[i].timeIN), 56);
+                pnlGantt.Controls.Add(txb);
+            }
+        }
+
+        public double avgwait(process[] p) // trung bình tgian đợi
+        {
+            int t = 0;
+            for (int i = 1; i <= m; i++)
+                t += p[i].timeWAIT;
+            return t / n;
+        }
+
+        public double avgsave(process[] p) // trung bình tgian lưu lại trong máy
+        {
+            int t = 0;
+            for (int i = 1; i <= m; i++)
+                t += p[i].timeSAVE;
+            return t / n;
+        }
+        public void output(process[] p)
+        {
+            //for testing
+            //for (int i = 1; i <= m; i++)
+            //    Console.WriteLine($"{p[i].name}\t{p[i].timeIN}\t{p[i].timeOUT}");
+            gantt(p);
+            //thứ tự ban đầu
+            for (int i = 1; i <= n; i++)
+                for (int j = i + 1; j <= n; j++)
+                    if (p[i].index > p[j].index)
+                        swap(p, i, j);
+            //for SJF, RR, Prior
+            for (int i = 1; i <= n; i++)
+                for (int j = i + 1; j <= n; j++)
+                    if (p[i].index == p[j].index && p[i].timeOUT < p[j].timeOUT)
+                        swap(p, i, j);
+            //for RR
+            for (int i = 1; i <= n; i++)
+                for (int j = i + 1; j <= m; j++)
+                    if (p[j].index == i && p[j].timeSAVE != 0)
+                        swap(p, i, j);
+            Console.WriteLine("Thời gian đợi trung bình: " + avgwait(p).ToString("F"));
+            Console.WriteLine("Thời gian lưu lại trung bình: " + avgsave(p).ToString("F"));
+            Console.WriteLine("Tiến trình\t\tTG đợi\t\tTG lưu lại\n");
+            for (int i = 1; i <= n; i++)
+                Console.WriteLine($"{p[i].name}\t\t{p[i].timeWAIT}\t\t{p[i].timeSAVE}");
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Algorithms
+        public void FCFS(process[] p) // First Come First Served
         {
             sort(p);
             p[1].timeIN = p[1].timeQUEUE;
@@ -234,7 +327,7 @@ namespace ProjectTTCS_63133655_63130175
             output(p);
         }
 
-        void SJF(process[] p) // sjf non preemp, doc quyen
+        void SJF(process[] p) // Shortest Job First (SJF non preemp - độc quyền)
         {
             cpu_sort(p);
             int temp, min = -1;
@@ -265,7 +358,7 @@ namespace ProjectTTCS_63133655_63130175
             output(p);
         }
 
-        public void SRTF(process[] p) // sjf preemp, ko doc quyen
+        public void SRTF(process[] p) // Shortest Remaining Time First (SJF preemp - ko độc quyền)
         {
             int timeOUT = 0;
 	        for(int i = 1; i <= n; i++) 
@@ -276,9 +369,9 @@ namespace ProjectTTCS_63133655_63130175
                     timeOUT += p[i].timeCPU;
             }
             cpu_sort(p);
-	        process[] tp = new process[100]; //list temp of p
+	        process[] p1 = new process[100];
 	        for(int i = 1; i <= n; i++)
-		        tp[i]=p[i];
+		        p1[i]=p[i];
             int j = 1; 
 	        m = 1;
             int temptime = 0;
@@ -295,26 +388,26 @@ namespace ProjectTTCS_63133655_63130175
                         p[j].timeSAVE = p[j].timeOUT - p[j].timeQUEUE;
                         p[j].timeWAIT = p[j].timeSAVE - p[j].timeCPU;
  				
-                        tp[p[j].index].timeOUT = t;
-                        tp[p[j].index].timeSAVE = tp[p[j].index].timeOUT - tp[p[j].index].timeQUEUE;
-                        tp[p[j].index].timeWAIT = tp[p[j].index].timeSAVE - tp[p[j].index].timeCPU;
+                        p1[p[j].index].timeOUT = t;
+                        p1[p[j].index].timeSAVE = p1[p[j].index].timeOUT - p1[p[j].index].timeQUEUE;
+                        p1[p[j].index].timeWAIT = p1[p[j].index].timeSAVE - p1[p[j].index].timeCPU;
 
                         temptime = 0;
                         j++;
                     }
                 }
                 for (int i = 1; i <= n; i++)
-                    if (t == tp[i].timeQUEUE) 
+                    if (t == p1[i].timeQUEUE) 
 			        {
                         m++;
                         int k = m - 1;
-                        if (temptime > 0 && tp[i].timeCPU < p[j].timeCPU - temptime) 
+                        if (temptime > 0 && p1[i].timeCPU < p[j].timeCPU - temptime) 
                         {
                             m++;
                             k = m - 1;
                             for (k = m - 1; k > j + 1; k--)
                                 p[k] = p[k - 2];
-                            p[j + 1] = tp[i];
+                            p[j + 1] = p1[i];
  
                             p[j + 2] = p[j];
                             p[j + 2].timeCPU -= temptime;
@@ -327,17 +420,17 @@ namespace ProjectTTCS_63133655_63130175
                         } 
                         else 
                         {
-                            while (k > j + 1 && tp[i].timeCPU < p[k - 1].timeCPU) 
+                            while (k > j + 1 && p1[i].timeCPU < p[k - 1].timeCPU) 
                             {
                                 p[k] = p[k - 1];
                                 k--;
-                                if (k == j + 1 && tp[i].timeCPU < p[k - 1].timeCPU - temptime) 
+                                if (k == j + 1 && p1[i].timeCPU < p[k - 1].timeCPU - temptime) 
                                 {
                                     p[k] = p[k - 1];
                                     k--;
                                 }
                             }
-                            p[k] = tp[i];
+                            p[k] = p1[i];
                         }
                     }
             }
@@ -345,7 +438,7 @@ namespace ProjectTTCS_63133655_63130175
             output(p);
         }
 
-        public void RR(process[] p) //Round Robin
+        public void RR(process[] p) // Round Robin
         {
             int timeOUT = 0;
             for (int i = 1; i <= n; i++)
@@ -355,9 +448,9 @@ namespace ProjectTTCS_63133655_63130175
                 else
                     timeOUT += p[i].timeCPU;
             }
-            process[] p1 = new process[100]; //list temp of p
-	        for(int i = 1; i <= n; i++)
-		        p1[i]=p[i];
+            process[] p1 = new process[100];
+            for (int i = 1; i <= n; i++)
+                p1[i] = p[i];
             m = 1;
             int count = 0;
             int j = 1;
@@ -404,87 +497,6 @@ namespace ProjectTTCS_63133655_63130175
             }
             m--;
             output(p);
-        }
-
-        public void gantt(process[] p)
-        {
-            Graphics g = pnlGantt.CreateGraphics();
-            Pen pen = new Pen(Color.Black);
-            Font font = new Font("Microsoft Sans Serif", 8f, FontStyle.Regular);
-
-            color[] c = new color[1000];
-            Random r = new Random();
-            for(int i=1; i<=n; i++)
-            {
-                c[i].x = r.Next(0,255);
-                c[i].y = r.Next(0,255);
-                c[i].z = r.Next(0,255);
-            }
-
-            int a = 0;
-            for (int i = 1; i <= m; i++)
-            {
-                if (i == 1)
-                    a = p[i].timeIN * 20 + 1;
-                else
-                    a += 20 * ((p[i-1].timeOUT + 1) - p[i-1].timeIN);
-                System.Windows.Forms.TextBox txb = new System.Windows.Forms.TextBox();
-                txb.Location = new Point(a, 1);
-                txb.Multiline = true;
-                txb.Font = font;
-                txb.Text = " " + p[i].name;
-                txb.Text += "\r\n";
-                txb.Text += "\r\n " + p[i].timeIN;
-                txb.BorderStyle = 0;
-                txb.BackColor = System.Drawing.Color.FromArgb(255, c[p[i].index].x, c[p[i].index].y, c[p[i].index].z);
-                txb.AutoSize = false;
-                txb.ReadOnly = true;
-                txb.Margin = new Padding(0, 0, 0, 0);
-                txb.Size = new Size(20 * ((p[i].timeOUT + 1) - p[i].timeIN), 56);
-                pnlGantt.Controls.Add(txb);
-            }
-        }
-
-        public double avgwait(process[] p)
-        {
-            int t = 0;
-            for (int i = 1; i <= m; i++)
-                t += p[i].timeWAIT;
-            return t / n;
-        }
-
-        public double avgsave(process[] p)
-        {
-            int t = 0;
-            for (int i = 1; i <= m; i++)
-                t += p[i].timeSAVE;
-            return t / n;
-        }
-        public void output(process[] p)
-        {
-            //for testing
-            //for (int i = 1; i <= m; i++)
-            //    Console.WriteLine($"{p[i].name}\t{p[i].timeIN}\t{p[i].timeOUT}");
-            gantt(p);
-            for (int i = 1; i <= n; i++)
-                for (int j = i + 1; j <= n; j++)
-                    if (p[i].index > p[j].index)
-                        swap(p, i, j);
-            //for sjf, RR, prior
-            for (int i = 1; i <= n; i++)
-                for (int j = i + 1; j <= n; j++)
-                    if (p[i].index == p[j].index && p[i].timeOUT < p[j].timeOUT)
-                        swap(p, i, j);
-            //for RR
-            for (int i = 1; i <= n; i++)
-                for (int j = i + 1; j <= m; j++)
-                    if (p[j].index == i && p[j].timeSAVE != 0)
-                        swap(p, i, j);
-            Console.WriteLine("Name\tWAIT\tSAVE\n");
-            for (int i = 1; i <= n; i++)
-                Console.WriteLine($"{p[i].name}\t{p[i].timeWAIT}\t{p[i].timeSAVE}");
-            Console.WriteLine("AVG wait:" + avgwait(p).ToString());
-            Console.WriteLine("AVG save:" + avgsave(p).ToString());
         }
     }
 }
