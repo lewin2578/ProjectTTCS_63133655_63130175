@@ -184,8 +184,8 @@ namespace ProjectTTCS_63133655_63130175
                     case 2: SJF(p);break;//SJF độc quyền
                     case 3: SRTF(p);break;//SJF ko độc quyền
                     case 4: RR(p);break;//RR
-                    case 5:;break;//Prior độc quyền
-                    case 6:;break;//Prior ko độc quyền
+                    case 5:PRIORITY_nonpreemp(p);break;//Prior độc quyền
+                    case 6: PRIORITY_preemp(p); break;//Prior ko độc quyền
                 }
             }
             //for testing
@@ -241,9 +241,9 @@ namespace ProjectTTCS_63133655_63130175
             for (int i = 1; i <= m; i++)
             {
                 if (i == 1)
-                    a = p[i].timeIN * 20 + 1;
+                    a = p[i].timeIN * 10 + 1;
                 else
-                    a += 20 * ((p[i - 1].timeOUT + 1) - p[i - 1].timeIN) + 1;
+                    a += 10 * ((p[i - 1].timeOUT + 1) - p[i - 1].timeIN) + 1;
                 System.Windows.Forms.TextBox txb = new System.Windows.Forms.TextBox();
                 txb.Location = new Point(a, 1);
                 txb.Multiline = true;
@@ -256,23 +256,23 @@ namespace ProjectTTCS_63133655_63130175
                 txb.AutoSize = false;
                 txb.ReadOnly = true;
                 txb.Margin = new Padding(0, 0, 0, 0);
-                txb.Size = new Size(20 * ((p[i].timeOUT + 1) - p[i].timeIN), 56);
+                txb.Size = new Size(10 * ((p[i].timeOUT + 1) - p[i].timeIN), 56);
                 pnlGantt.Controls.Add(txb);
             }
         }
 
         public double avgwait(process[] p) // trung bình tgian đợi
         {
-            int t = 0;
-            for (int i = 1; i <= m; i++)
+            double t = 0;
+            for (int i = 1; i <= n; i++)
                 t += p[i].timeWAIT;
             return t / n;
         }
 
         public double avgsave(process[] p) // trung bình tgian lưu lại trong máy
         {
-            int t = 0;
-            for (int i = 1; i <= m; i++)
+            double t = 0;
+            for (int i = 1; i <= n; i++)
                 t += p[i].timeSAVE;
             return t / n;
         }
@@ -280,7 +280,7 @@ namespace ProjectTTCS_63133655_63130175
         {
             //for testing
             //for (int i = 1; i <= m; i++)
-            //    Console.WriteLine($"{p[i].name}\t{p[i].timeIN}\t{p[i].timeOUT}");
+            //    Console.WriteLine($"{p[i].name}\t{p[i].timeIN}\t{p[i].timeOUT}\t{p[i].timeWAIT}\t{p[i].timeSAVE}");
             gantt(p);
             //thứ tự ban đầu
             for (int i = 1; i <= n; i++)
@@ -297,8 +297,8 @@ namespace ProjectTTCS_63133655_63130175
                 for (int j = i + 1; j <= m; j++)
                     if (p[j].index == i && p[j].timeSAVE != 0)
                         swap(p, i, j);
-            Console.WriteLine("Thời gian đợi trung bình: " + avgwait(p).ToString("F"));
-            Console.WriteLine("Thời gian lưu lại trung bình: " + avgsave(p).ToString("F"));
+            Console.WriteLine($"Thời gian đợi trung bình: {avgwait(p)}");
+            Console.WriteLine($"Thời gian lưu lại trung bình: {avgsave(p)}");
             Console.WriteLine("Tiến trình\t\tTG đợi\t\tTG lưu lại\n");
             for (int i = 1; i <= n; i++)
                 Console.WriteLine($"{p[i].name}\t\t{p[i].timeWAIT}\t\t{p[i].timeSAVE}");
@@ -368,7 +368,6 @@ namespace ProjectTTCS_63133655_63130175
                 else
                     timeOUT += p[i].timeCPU;
             }
-            cpu_sort(p);
 	        process[] p1 = new process[100];
 	        for(int i = 1; i <= n; i++)
 		        p1[i]=p[i];
@@ -382,16 +381,16 @@ namespace ProjectTTCS_63133655_63130175
                     if (temptime < p[j].timeCPU)
                         temptime++;
                     if (temptime == p[j].timeCPU) 
-                    {
- 				        p[j].timeIN = t - p[j].timeCPU;
-                        p[j].timeOUT = p[j].timeIN + p[j].timeCPU;
-                        p[j].timeSAVE = p[j].timeOUT - p[j].timeQUEUE;
-                        p[j].timeWAIT = p[j].timeSAVE - p[j].timeCPU;
- 				
+                    { 
                         p1[p[j].index].timeOUT = t;
                         p1[p[j].index].timeSAVE = p1[p[j].index].timeOUT - p1[p[j].index].timeQUEUE;
                         p1[p[j].index].timeWAIT = p1[p[j].index].timeSAVE - p1[p[j].index].timeCPU;
 
+                        p[j].timeIN = t - p[j].timeCPU;
+                        p[j].timeOUT = p1[p[j].index].timeOUT;
+                        p[j].timeSAVE = p1[p[j].index].timeSAVE;
+                        p[j].timeWAIT = p1[p[j].index].timeWAIT;
+                  
                         temptime = 0;
                         j++;
                     }
@@ -493,6 +492,126 @@ namespace ProjectTTCS_63133655_63130175
                     {
                         m++;
                         p[m - 1] = p1[i];
+                    }
+            }
+            m--;
+            output(p);
+        }
+
+        public void PRIORITY_nonpreemp(process[] p) // Priority độc quyền
+        {
+            int timeOUT = 0;
+            for (int i = 1; i <= n; i++)
+            {
+                if (timeOUT < p[i].timeQUEUE)
+                    timeOUT = p[i].timeQUEUE + p[i].timeCPU;
+                else
+                    timeOUT += p[i].timeCPU;
+            }
+            process[] p1 = new process[100];
+            for (int i = 1; i <= n; i++)
+                p1[i] = p[i];
+            int j = 1;
+            m = 1;
+            int temptime = 0;
+            for (int t = 0; t <= timeOUT; t++)
+            {
+                if (m > 1 && j < m)
+                {
+                    if (temptime < p[j].timeCPU) temptime++;
+                    if (temptime == p[j].timeCPU)
+                    {
+                        p[j].timeIN = t - p[j].timeCPU;
+                        p[j].timeOUT = p[j].timeIN + p[j].timeCPU;
+                        p[j].timeSAVE = p[j].timeOUT - p[j].timeQUEUE;
+                        p[j].timeWAIT = p[j].timeSAVE - p[j].timeCPU;
+                        temptime = 0;
+                        j++;
+                    }
+                }
+                for (int i = 1; i <= n; i++)
+                    if (t == p1[i].timeQUEUE)
+                    {
+                        int k = m;
+                        while (k > j + 1 && p1[i].priority < p[k - 1].priority)
+                        {
+                            p[k] = p[k - 1];
+                            k--;
+                        }
+                        p[k] = p1[i];
+                        m++;
+                    }
+            }
+            m--;
+            output(p);
+        }
+
+        public void PRIORITY_preemp(process[] p) // Priority ko độc quyền
+        {
+            int timeOUT = 0;
+            for (int i = 1; i <= n; i++)
+            {
+                if (timeOUT < p[i].timeQUEUE)
+                    timeOUT = p[i].timeQUEUE + p[i].timeCPU;
+                else
+                    timeOUT += p[i].timeCPU;
+            }
+            process[] p1 = new process[100];
+            for (int i = 1; i <= n; i++)
+                p1[i] = p[i];
+            int j = 1;
+            m = 1;
+            int temptime = 0;
+            for (int t = 0; t <= timeOUT; t++)
+            {
+                if (m > 1 && j < m)
+                {
+                    if (temptime < p[j].timeCPU)
+                        temptime++;
+                    if (temptime == p[j].timeCPU)
+                    {
+                        p1[p[j].index].timeOUT = t;
+                        p1[p[j].index].timeSAVE = p1[p[j].index].timeOUT - p1[p[j].index].timeQUEUE;
+                        p1[p[j].index].timeWAIT = p1[p[j].index].timeSAVE - p1[p[j].index].timeCPU;
+
+                        p[j].timeIN = t - p[j].timeCPU;
+                        p[j].timeOUT = p1[p[j].index].timeOUT;
+                        p[j].timeSAVE = p1[p[j].index].timeSAVE;
+                        p[j].timeWAIT = p1[p[j].index].timeWAIT;
+
+                        temptime = 0;
+                        j++;
+                    }
+                }
+                for (int i = 1; i <= n; i++)
+                    if (t == p1[i].timeQUEUE)
+                    {
+                        m++;
+                        int k = m - 1;
+                        if (temptime > 0 && p1[i].priority < p[j].priority)
+                        {
+                            m++;
+                            k = m - 1;
+                            for (k = m - 1; k > j + 1; k--)
+                                p[k] = p[k - 2];
+                            p[j + 1] = p1[i];
+                            p[j + 2] = p[j];
+                            p[j + 2].timeCPU -= temptime;
+                            p[j].timeIN = t - temptime;
+                            p[j].timeOUT = t;
+                            p[j].timeCPU = temptime;
+                            temptime = 0;
+                            j++;
+                        }
+                        else
+                        {
+                            while (k > j && p1[i].priority < p[k - 1].priority)
+                            {
+                                p[k] = p[k - 1];
+                                k--;
+                            }
+                            p[k] = p1[i];
+                        }
                     }
             }
             m--;
