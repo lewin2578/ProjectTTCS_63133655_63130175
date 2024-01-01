@@ -188,11 +188,6 @@ namespace ProjectTTCS_63133655_63130175
                     case 6: PRIORITY_preemp(p); break;//Prior ko độc quyền
                 }
             }
-            //for testing
-            //Console.WriteLine($"{n}\t{select}\t{q}");
-            //Console.WriteLine("Name\tQUEUE\tCPU\tPriority\n");
-            //for (int i = 1; i <= n; i++)
-            //   Console.WriteLine($"{p[i].name}\t{p[i].timeQUEUE}\t{p[i].timeCPU}\t{p[i].priority}");
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,9 +274,6 @@ namespace ProjectTTCS_63133655_63130175
         }
         public void output(process[] p)
         {
-            //for testing
-            //for (int i = 1; i <= m; i++)
-            //    Console.WriteLine($"{p[i].name}\t{p[i].timeIN}\t{p[i].timeOUT}\t{p[i].timeWAIT}\t{p[i].timeSAVE}");
             gantt(p);
             lblEnd.Text += " " + p[m].timeOUT.ToString();
             //thứ tự ban đầu
