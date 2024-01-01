@@ -57,6 +57,7 @@
             this.sitemPrior = new System.Windows.Forms.ToolStripMenuItem();
             this.lblSign = new System.Windows.Forms.Label();
             this.lblChoose = new System.Windows.Forms.Label();
+            this.lblEnd = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridInput)).BeginInit();
             this.pnlQuantum.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.quantumInput)).BeginInit();
@@ -68,28 +69,28 @@
             // 
             this.lblGantt.AutoSize = true;
             this.lblGantt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblGantt.Location = new System.Drawing.Point(14, 267);
+            this.lblGantt.Location = new System.Drawing.Point(14, 255);
             this.lblGantt.Name = "lblGantt";
-            this.lblGantt.Size = new System.Drawing.Size(93, 20);
+            this.lblGantt.Size = new System.Drawing.Size(112, 20);
             this.lblGantt.TabIndex = 28;
-            this.lblGantt.Text = "Gantt chart";
+            this.lblGantt.Text = "Biểu đồ Gantt";
             // 
             // lblOutput
             // 
             this.lblOutput.AutoSize = true;
             this.lblOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblOutput.Location = new System.Drawing.Point(14, 353);
+            this.lblOutput.Location = new System.Drawing.Point(14, 384);
             this.lblOutput.Name = "lblOutput";
-            this.lblOutput.Size = new System.Drawing.Size(59, 20);
+            this.lblOutput.Size = new System.Drawing.Size(66, 20);
             this.lblOutput.TabIndex = 27;
-            this.lblOutput.Text = "Output";
+            this.lblOutput.Text = "Kết quả";
             // 
             // pnlGantt
             // 
             this.pnlGantt.AutoScroll = true;
             this.pnlGantt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlGantt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.pnlGantt.Location = new System.Drawing.Point(18, 290);
+            this.pnlGantt.Location = new System.Drawing.Point(18, 278);
             this.pnlGantt.Name = "pnlGantt";
             this.pnlGantt.Size = new System.Drawing.Size(690, 60);
             this.pnlGantt.TabIndex = 26;
@@ -99,7 +100,7 @@
             this.txtOutput.BackColor = System.Drawing.Color.Black;
             this.txtOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.txtOutput.ForeColor = System.Drawing.Color.Aqua;
-            this.txtOutput.Location = new System.Drawing.Point(18, 376);
+            this.txtOutput.Location = new System.Drawing.Point(18, 407);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -279,7 +280,7 @@
             this.chooseStrip});
             this.menuStrip1.Location = new System.Drawing.Point(35, 45);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(137, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(139, 30);
             this.menuStrip1.TabIndex = 16;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -291,7 +292,7 @@
             this.sitemRR,
             this.sitemPrior});
             this.chooseStrip.Name = "chooseStrip";
-            this.chooseStrip.Size = new System.Drawing.Size(129, 24);
+            this.chooseStrip.Size = new System.Drawing.Size(129, 26);
             this.chooseStrip.Text = "Chọn chiến lược";
             this.chooseStrip.Click += new System.EventHandler(this.chooseStrip_Click);
             // 
@@ -343,11 +344,22 @@
             this.lblChoose.TabIndex = 29;
             this.lblChoose.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblEnd
+            // 
+            this.lblEnd.AutoSize = true;
+            this.lblEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblEnd.Location = new System.Drawing.Point(15, 351);
+            this.lblEnd.Name = "lblEnd";
+            this.lblEnd.Size = new System.Drawing.Size(146, 20);
+            this.lblEnd.TabIndex = 31;
+            this.lblEnd.Text = "Thời gian kết thúc:";
+            // 
             // simForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(732, 523);
+            this.ClientSize = new System.Drawing.Size(732, 550);
+            this.Controls.Add(this.lblEnd);
             this.Controls.Add(this.lblSign);
             this.Controls.Add(this.lblChoose);
             this.Controls.Add(this.lblGantt);
@@ -409,6 +421,7 @@
         private System.Windows.Forms.Label lblSign;
         private System.Windows.Forms.Label lblChoose;
         private System.Windows.Forms.NumericUpDown quantumInput;
+        private System.Windows.Forms.Label lblEnd;
     }
 }
 

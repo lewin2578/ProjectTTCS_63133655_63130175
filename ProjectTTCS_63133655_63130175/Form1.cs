@@ -230,20 +230,21 @@ namespace ProjectTTCS_63133655_63130175
 
             color[] c = new color[1000];
             Random r = new Random();
+            
             for (int i = 1; i <= n; i++)
             {
-                c[i].x = r.Next(0, 255);
-                c[i].y = r.Next(0, 255);
-                c[i].z = r.Next(0, 255);
+                c[i].x = r.Next(100, 255);
+                c[i].y = r.Next(100, 255);
+                c[i].z = r.Next(100, 255);
             }
 
             int a = 0;
             for (int i = 1; i <= m; i++)
             {
                 if (i == 1)
-                    a = p[i].timeIN * 10 + 1;
+                    a = p[i].timeIN * 15 + 1;
                 else
-                    a += 10 * ((p[i - 1].timeOUT + 1) - p[i - 1].timeIN) + 1;
+                    a += 15 * ((p[i - 1].timeOUT + 1) - p[i - 1].timeIN) + 1;
                 System.Windows.Forms.TextBox txb = new System.Windows.Forms.TextBox();
                 txb.Location = new Point(a, 1);
                 txb.Multiline = true;
@@ -256,7 +257,7 @@ namespace ProjectTTCS_63133655_63130175
                 txb.AutoSize = false;
                 txb.ReadOnly = true;
                 txb.Margin = new Padding(0, 0, 0, 0);
-                txb.Size = new Size(10 * ((p[i].timeOUT + 1) - p[i].timeIN), 56);
+                txb.Size = new Size(15 * ((p[i].timeOUT + 1) - p[i].timeIN), 56);
                 pnlGantt.Controls.Add(txb);
             }
         }
@@ -282,6 +283,7 @@ namespace ProjectTTCS_63133655_63130175
             //for (int i = 1; i <= m; i++)
             //    Console.WriteLine($"{p[i].name}\t{p[i].timeIN}\t{p[i].timeOUT}\t{p[i].timeWAIT}\t{p[i].timeSAVE}");
             gantt(p);
+            lblEnd.Text += " " + p[m].timeOUT.ToString();
             //thứ tự ban đầu
             for (int i = 1; i <= n; i++)
                 for (int j = i + 1; j <= n; j++)
