@@ -28,6 +28,7 @@ namespace ProjectTTCS_63133655_63130175
         {
             TextBoxWriter writer = new TextBoxWriter(txtOutput);
             Console.SetOut(writer);
+            lblEnd.Visible = false;
             pnlGantt.Controls.Clear();
             pnlGantt.Refresh();
             txtOutput.Clear();
@@ -275,7 +276,8 @@ namespace ProjectTTCS_63133655_63130175
         public void output(process[] p)
         {
             gantt(p);
-            lblEnd.Text += " " + p[m].timeOUT.ToString();
+            lblEnd.Text = "Thời gian kết thúc: " + p[m].timeOUT.ToString();
+            lblEnd.Visible = true;
             //thứ tự ban đầu
             for (int i = 1; i <= n; i++)
                 for (int j = i + 1; j <= n; j++)
