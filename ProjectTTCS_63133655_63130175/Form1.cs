@@ -323,7 +323,7 @@ namespace ProjectTTCS_63133655_63130175
             output(p);
         }
 
-        void SJF(process[] p) // Shortest Job First (SJF non preemp - độc quyền)
+        public void SJF(process[] p) // Shortest Job First (SJF non preemp - độc quyền)
         {
             cpu_sort(p);
             int temp, min = -1;
